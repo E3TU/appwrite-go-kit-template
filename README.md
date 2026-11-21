@@ -1,0 +1,1 @@
+# appwrite-go-kit-template
