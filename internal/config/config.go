@@ -6,6 +6,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -13,6 +14,7 @@ import (
 	"time"
 
 	"github.com/e3tu/appwrite-base"
+	"github.com/joho/godotenv"
 )
 
 // Env is the parsed configuration plus the template-only settings.
@@ -27,8 +29,15 @@ type Env struct {
 
 // Load reads the environment.
 //
-// Required: APPWRITE_PROJECT_ID, APPWRITE_API_KEY, APPWRITE_ENDPOINT.
+// A .env file in the working directory is loaded first when present; values
+// already exported in the real environment win, so production stays
+// authoritative. Required: APPWRITE_PROJECT_ID, APPWRITE_API_KEY,
+// APPWRITE_ENDPOINT.
 func Load() (Env, error) {
+	if err := loadDotEnv(); err != nil {
+		return Env{}, err
+	}
+
 	cfg := base.Defaults()
 
 	cfg.ProjectID = strings.TrimSpace(os.Getenv("APPWRITE_PROJECT_ID"))
@@ -110,6 +119,18 @@ func Load() (Env, error) {
 		Listen:     listen,
 		TodosTable: todosTable,
 	}, nil
+}
+
+// loadDotEnv reads ./.env when it exists.
+//
+// A missing file is not an error: containers and CI usually inject real
+// environment variables instead. A malformed file is an error, because
+// silently ignoring it hides typos in secrets.
+func loadDotEnv() error {
+	if err := godotenv.Load(); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf(".env: %w", err)
+	}
+	return nil
 }
 
 // envBool reads an optional boolean. An unset variable is false.

@@ -30,9 +30,12 @@ Once the library is tagged and pushed, swap that line for a versioned require.
 
 ```
 cp .env.example .env
-# fill in project id, API key, endpoints, database id
+# fill in project id, API key, endpoint, database id
 go run .
 ```
+
+`.env` is loaded automatically. Variables already exported in the shell win
+over the file, so containers and CI can inject real values instead.
 
 ## Routes
 

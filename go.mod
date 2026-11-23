@@ -4,6 +4,7 @@ go 1.26.11
 
 require (
 	github.com/appwrite/sdk-for-go/v7 v7.21.0
+	github.com/joho/godotenv v1.5.1
 	github.com/e3tu/appwrite-base v0.0.0
 	github.com/gin-gonic/gin v1.12.0
 )
