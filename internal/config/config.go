@@ -27,25 +27,22 @@ type Env struct {
 
 // Load reads the environment.
 //
-// Required: APPWRITE_PROJECT_ID, APPWRITE_API_KEY, APPWRITE_ENDPOINT,
-// APPWRITE_PUBLIC_ENDPOINT.
+// Required: APPWRITE_PROJECT_ID, APPWRITE_API_KEY, APPWRITE_ENDPOINT.
 func Load() (Env, error) {
 	cfg := base.Defaults()
 
 	cfg.ProjectID = strings.TrimSpace(os.Getenv("APPWRITE_PROJECT_ID"))
 	cfg.APIKey = strings.TrimSpace(os.Getenv("APPWRITE_API_KEY"))
 	cfg.Endpoint = strings.TrimSpace(os.Getenv("APPWRITE_ENDPOINT"))
-	cfg.PublicEndpoint = strings.TrimSpace(os.Getenv("APPWRITE_PUBLIC_ENDPOINT"))
 	cfg.CookieName = strings.TrimSpace(os.Getenv("APPWRITE_COOKIE_NAME"))
 	if cfg.CookieName == "" && cfg.ProjectID != "" {
 		cfg.CookieName = "a_session_" + cfg.ProjectID
 	}
 
 	for name, value := range map[string]string{
-		"APPWRITE_PROJECT_ID":      cfg.ProjectID,
-		"APPWRITE_API_KEY":         cfg.APIKey,
-		"APPWRITE_ENDPOINT":        cfg.Endpoint,
-		"APPWRITE_PUBLIC_ENDPOINT": cfg.PublicEndpoint,
+		"APPWRITE_PROJECT_ID": cfg.ProjectID,
+		"APPWRITE_API_KEY":    cfg.APIKey,
+		"APPWRITE_ENDPOINT":   cfg.Endpoint,
 	} {
 		if value == "" {
 			return Env{}, fmt.Errorf("%s is required", name)

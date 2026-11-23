@@ -55,4 +55,4 @@ go run .
 - `internal/config/config.go` - the only file that reads env.
 - `internal/router/router.go` - routes exist only for enabled capabilities.
 - `internal/handlers/todos.go` - row CRUD with `query.*` helpers.
-- `internal/handlers/files.go` - upload plus public URL from `PublicEndpoint`.
+- `internal/handlers/files.go` - upload plus file URL built from `Endpoint`.
